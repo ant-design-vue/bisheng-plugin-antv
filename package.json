@@ -1,6 +1,6 @@
 {
   "name": "bisheng-plugin-antv",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "  \"description\": \"To support ant.design-like websites.\",",
   "main": "index.js",
   "dependencies": {},
