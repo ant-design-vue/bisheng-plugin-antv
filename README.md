@@ -1,0 +1,1 @@
+由[bisheng-plugin-antd](https://github.com/ant-design/bisheng-plugin-antd)改造，增加支持加载vue组件
