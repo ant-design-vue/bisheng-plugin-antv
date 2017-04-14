@@ -88,42 +88,39 @@ module.exports = function (markdownData, isBuild, noPreview, babelConfig) {
     return path.replace(/\\/g, '\\\\');
   }
 
-  var isSSR = false
-  var filePath = path.join(process.cwd(), meta.filename.replace(/\.md$/, '.vue'))
-  if(fs.existsSync(filePath)) {
+  var isSSR = false;
+  var filePath = path.join(process.cwd(), meta.filename.replace(/\.md$/, '.vue'));
+  if (fs.existsSync(filePath)) {
     var fileContent = fs.readFileSync(filePath).toString();
     var language = Prism.languages['jsx'] || Prism.languages.autoit;
-    markdownData.vueHighlightedCode = Prism.highlight(fileContent, language);
-    markdownData.vueComponent = {
-      __BISHENG_EMBEDED_CODE: true,
-      code: '' + ('function () {\n' + '  return new Promise(function (resolve) {\n') +
-      (isSSR ? '' : '    require.ensure([], function (require) {\n') +
-      '      resolve(require(\'' + escapeWinPath(filePath) + '\'));\n' +
-      (isSSR ? '' : '    });\n') + '  });\n' + '}'
-    }
-  }
-
-  var sourceCodeObject = getSourceCodeObject(contentChildren, codeIndex);
-  if (sourceCodeObject.isES6) {
-    markdownData.highlightedCode = contentChildren[codeIndex].slice(0, 2);
-    if (!noPreview) {
-      markdownData.preview = {
-        __BISHENG_EMBEDED_CODE: true,
-        code: transformer(sourceCodeObject.code, babelConfig)
-      };
-    }
-  } else {
-    // TODO: use loader's `this.dependencies` to watch
-    var requireString = 'require(\'!!babel!' + watchLoader + '!' + getCorrespondingTSX(meta.filename) + '\')';
-    markdownData.highlightedCode = {
-      __BISHENG_EMBEDED_CODE: true,
-      code: requireString + '.highlightedCode'
-    };
+    markdownData.highlightedCode = Prism.highlight(fileContent, language);
     markdownData.preview = {
       __BISHENG_EMBEDED_CODE: true,
-      code: requireString + '.preview'
+      code: '' + ('function () {\n' + '  return new Promise(function (resolve) {\n') + (isSSR ? '' : '    require.ensure([], function (require) {\n') + '      resolve(require(\'' + escapeWinPath(filePath) + '\'));\n' + (isSSR ? '' : '    });\n') + '  });\n' + '}'
     };
   }
+
+  // var sourceCodeObject = getSourceCodeObject(contentChildren, codeIndex);
+  // if (sourceCodeObject.isES6) {
+  //   markdownData.highlightedCode = contentChildren[codeIndex].slice(0, 2);
+  //   if (!noPreview) {
+  //     markdownData.preview = {
+  //       __BISHENG_EMBEDED_CODE: true,
+  //       code: transformer(sourceCodeObject.code, babelConfig)
+  //     };
+  //   }
+  // } else {
+  //   // TODO: use loader's `this.dependencies` to watch
+  //   var requireString = 'require(\'!!babel!' + watchLoader + '!' + getCorrespondingTSX(meta.filename) + '\')';
+  //   markdownData.highlightedCode = {
+  //     __BISHENG_EMBEDED_CODE: true,
+  //     code: requireString + '.highlightedCode'
+  //   };
+  //   markdownData.preview = {
+  //     __BISHENG_EMBEDED_CODE: true,
+  //     code: requireString + '.preview'
+  //   };
+  // }
 
   // Add style node to markdown data.
   var styleNode = getStyleNode(contentChildren);
