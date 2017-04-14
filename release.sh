@@ -13,9 +13,6 @@ then
   echo "Releasing $VERSI
   ON ..."
 
-  # build
-  VERSION=$VERSION npm run build
-
   # commit
   # git add -A
   # git commit -m "[build] $VERSION"
@@ -23,7 +20,6 @@ then
 
   # publish
   git push origin master
-  git push origin refs/tags/v$VERSION
   git checkout dev
   git rebase master
   git push origin dev
