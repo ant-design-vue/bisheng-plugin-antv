@@ -12,7 +12,7 @@
     "lint": "eslint ./src",
     "eslint-fix": "eslint --fix ./src",
     "babel": "babel ./src --out-dir ./lib",
-    "pub": "sh ./git-release.sh && sh .g/release.sh",
+    "pub": "sh ./git-release.sh && sh .git/release.sh",
     "prepublish": "npm run babel && cp ./src/template.html ./lib",
     "postpublish": "rm -rf lib",
     "test": "echo \"Error: no test specified\" && exit 1"
